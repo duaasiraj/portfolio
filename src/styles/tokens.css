@@ -1,0 +1,59 @@
+:root {
+  /* Colors */
+  --color-surface: #fdf9f4;
+  --color-surface-dim: #ddd9d5;
+  --color-surface-bright: #fdf9f4;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f7f3ee;
+  --color-surface-container: #f1ede8;
+  --color-surface-container-high: #ebe8e3;
+  --color-surface-container-highest: #e5e2dd;
+
+  --color-on-surface: #1c1c19;
+  --color-on-surface-variant: #444748;
+  --color-outline: #747878;
+  --color-outline-variant: #c4c7c7;
+
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+
+  --color-signal: #b7102a;
+  --color-on-signal: #ffffff;
+
+  --color-error: #ba1a1a;
+  --color-background: #fdf9f4;
+  --color-on-background: #1c1c19;
+
+  /* Typography */
+  --font-sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --fs-display-lg: 64px;
+  --fs-headline-lg: 48px;
+  --fs-headline-md: 32px;
+  --fs-body-lg: 18px;
+  --fs-body-md: 16px;
+  --fs-label-caps: 12px;
+  --fs-label-md: 14px;
+  --fs-technical-sm: 11px;
+
+  --lh-tight: 1.1;
+  --lh-snug: 1.2;
+  --lh-normal: 1.4;
+  --lh-relaxed: 1.6;
+
+  --ls-tight: -0.04em;
+  --ls-headline: -0.03em;
+  --ls-subhead: -0.02em;
+  --ls-caps: 0.1em;
+
+  /* Spacing */
+  --space-unit: 4px;
+  --gutter: 24px;
+  --margin-mobile: 16px;
+  --margin-desktop: 64px;
+  --hairline: 0.5px;
+
+  --max-width: 1440px;
+  --content-width: 1280px;
+}

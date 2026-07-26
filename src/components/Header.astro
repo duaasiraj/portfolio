@@ -1,0 +1,100 @@
+---
+const base = import.meta.env.BASE_URL;
+const path = Astro.url.pathname;
+
+const navItems = [
+  { label: 'MISSION LOG', href: `${base}mission-log/` },
+  { label: 'PROJECTS', href: `${base}projects/` },
+  { label: 'RESEARCH', href: `${base}research/` },
+  { label: 'ABOUT', href: `${base}about/` },
+];
+
+function isActive(href: string) {
+  // normalize trailing slashes for comparison
+  const norm = (s: string) => s.replace(/\/+$/, '/');
+  return norm(path).startsWith(norm(href));
+}
+---
+
+<header class="nav">
+  <div class="shell nav__inner">
+    <a href={base} class="nav__brand">
+      <span class="nav__brand-name headline-md">ALEX_CHEN<span class="dot-red">.</span></span>
+      <span class="nav__brand-sub technical-sm">CS STUDENT / AI &amp; SYSTEMS</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class:list={['nav__link', 'label-caps', { 'nav__link--active': isActive(item.href) }]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-surface);
+    border-bottom: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .nav__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .nav__brand-name {
+    letter-spacing: -0.02em;
+  }
+
+  .dot-red {
+    color: var(--color-signal);
+  }
+
+  .nav__brand-sub {
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .nav__link {
+    color: var(--color-on-surface-variant);
+    font-weight: 500;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav__link--active {
+    color: var(--color-signal);
+    font-weight: 700;
+    border-bottom-color: var(--color-signal);
+  }
+
+  .nav__link:hover:not(.nav__link--active) {
+    color: var(--color-on-background);
+  }
+</style>

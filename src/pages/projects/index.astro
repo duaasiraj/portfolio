@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+const projects = (await getCollection('projects')).sort((a, b) =>
+  a.data.index.localeCompare(b.data.index)
+);
+---
+
+<BaseLayout title="Projects" description="Selected projects and experiments by Alex Chen.">
+  <section class="shell page-head">
+    <SectionLabel text="PROJECTS" />
+    <h1 class="display-lg page-head__title">All experiments<span class="dot-red">.</span></h1>
+    <p class="body-md page-head__lede">
+      A running archive of what I've built — from-scratch systems, applied ML, and everything
+      in between. Each one taught me something the tutorials didn't.
+    </p>
+  </section>
+
+  <section class="shell projects-grid">
+    {projects.map((p) => (
+      <ProjectCard
+        index={p.data.index}
+        title={p.data.title}
+        summary={p.data.summary}
+        stack={p.data.stack}
+        href={`${base}projects/${p.slug}/`}
+        githubUrl={p.data.githubUrl}
+        variant="wide"
+      />
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .dot-red {
+    color: var(--color-signal);
+  }
+
+  .page-head {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 80px;
+    padding-bottom: 48px;
+    max-width: 720px;
+  }
+
+  .page-head__lede {
+    color: var(--color-on-surface-variant);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding-bottom: 96px;
+  }
+
+  @media (max-width: 1024px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

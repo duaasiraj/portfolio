@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+const base = import.meta.env.BASE_URL;
+
+const dateStr = project.data.date
+  .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+  .toUpperCase();
+---
+
+<BaseLayout title={project.data.title} description={project.data.summary}>
+  <article class="shell project">
+    <a href={`${base}projects/`} class="technical-sm back-link">← ALL PROJECTS</a>
+
+    <header class="project__head">
+      <SectionLabel text={`EXPERIMENT ${project.data.index}`} />
+      <h1 class="display-lg project__title">{project.data.title}<span class="dot-red">.</span></h1>
+      <p class="body-lg project__summary">{project.data.summary}</p>
+
+      <div class="project__actions">
+        {project.data.githubUrl && (
+          <a href={project.data.githubUrl} target="_blank" rel="noopener noreferrer" class="btn">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.68 0 8.22c0 3.63 2.29 6.71 5.47 7.8.4.08.55-.18.55-.4 0-.19-.01-.83-.01-1.51-2.01.38-2.53-.5-2.69-.96-.09-.24-.48-.96-.82-1.16-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.24 1.87.89 2.33.68.07-.53.28-.89.51-1.1-1.78-.2-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.03.08-2.15 0 0 .67-.22 2.2.84a7.4 7.4 0 0 1 4 0c1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.95.08 2.15.51.57.82 1.29.82 2.19 0 3.12-1.87 3.82-3.65 4.02.29.26.54.76.54 1.53 0 1.11-.01 2-.01 2.27 0 .22.15.48.55.4A8.23 8.23 0 0 0 16 8.22C16 3.68 12.42 0 8 0Z"/>
+            </svg>
+            VIEW SOURCE
+          </a>
+        )}
+        {project.data.liveUrl && (
+          <a href={project.data.liveUrl} target="_blank" rel="noopener noreferrer" class="btn">
+            VIEW LIVE ↗
+          </a>
+        )}
+      </div>
+    </header>
+
+    <div class="project__meta-row technical-sm">
+      <div class="meta-block">
+        <span class="meta-label">STATUS</span>
+        <span class="meta-value signal">{project.data.status.toUpperCase()}</span>
+      </div>
+      <div class="meta-block">
+        <span class="meta-label">DATE</span>
+        <span class="meta-value">{dateStr}</span>
+      </div>
+      <div class="meta-block">
+        <span class="meta-label">STACK</span>
+        <span class="meta-value">{project.data.stack.join(' · ')}</span>
+      </div>
+      {project.data.coordinates && (
+        <div class="meta-block">
+          <span class="meta-label">REF</span>
+          <span class="meta-value">{project.data.coordinates}</span>
+        </div>
+      )}
+    </div>
+
+    <hr class="hr" />
+
+    <div class="project__content body-md">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .dot-red {
+    color: var(--color-signal);
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 48px;
+    padding-bottom: 96px;
+    max-width: 860px;
+    margin-left: 0;
+  }
+
+  .back-link {
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .back-link:hover {
+    color: var(--color-signal);
+  }
+
+  .project__head {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .project__summary {
+    color: var(--color-on-surface-variant);
+    max-width: 620px;
+  }
+
+  .project__actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 8px;
+  }
+
+  .project__meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding: 24px 0;
+    border-top: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .meta-label {
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    color: var(--color-on-background);
+    text-transform: uppercase;
+  }
+
+  .meta-value.signal {
+    color: var(--color-signal);
+  }
+
+  .project__content :global(h2) {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 24px;
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  .project__content :global(p) {
+    color: var(--color-on-surface-variant);
+    margin-bottom: 16px;
+  }
+
+  .project__content :global(ul) {
+    color: var(--color-on-surface-variant);
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+
+  .project__content :global(li) {
+    margin-bottom: 8px;
+  }
+</style>

@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+
+const skills = [
+  { group: 'LANGUAGES', items: ['Python', 'TypeScript', 'C++', 'Rust (learning)'] },
+  { group: 'ML / DATA', items: ['PyTorch', 'NumPy', 'scikit-learn', 'Pandas'] },
+  { group: 'SYSTEMS', items: ['Linux', 'Docker', 'Distributed systems basics'] },
+  { group: 'WEB', items: ['Astro', 'React', 'Node.js'] },
+];
+---
+
+<BaseLayout title="About" description="About Alex Chen — CS student, AI & systems.">
+  <section class="shell page-head">
+    <SectionLabel text="ABOUT ME" />
+    <h1 class="display-lg page-head__title">Alex Chen<span class="dot-red">.</span></h1>
+    <p class="body-lg page-head__lede">
+      Computer science student building things that sit at the edge of AI, systems, and the
+      real world. I'd rather build a small, broken version of something than read about the
+      polished one.
+    </p>
+  </section>
+
+  <section class="shell bio-grid">
+    <div class="bio-col card">
+      <div class="bio-col__image" aria-hidden="true"></div>
+      <div class="bio-col__body">
+        <span class="technical-sm bio-col__label">CURRENTLY:</span>
+        <span class="label-md bio-col__role">ML Research Intern @ EcoMuhafiz</span>
+        <span class="technical-sm bio-col__sub">Exploring · Learning · Building</span>
+      </div>
+    </div>
+
+    <div class="bio-col-text">
+      <p class="body-md">
+        I'm a CS student focused on AI and systems — the space where a model has to survive
+        contact with real data, real latency, and real failure modes. Most of what I build
+        starts as "how does this actually work under the hood," which is how projects like
+        Nanograd (an autodiff engine from scratch) end up happening.
+      </p>
+      <p class="body-md">
+        Outside of coursework, I'm currently interning on the ML team at EcoMuhafiz, working
+        on bioacoustic classification for wildlife monitoring. I write up what I learn — the
+        wins and the dead ends — in the Mission Log.
+      </p>
+      <a href="mailto:you@example.com" class="link-underline">GET IN TOUCH →</a>
+    </div>
+  </section>
+
+  <hr class="hr shell-hr" />
+
+  <section class="shell skills-section">
+    <SectionLabel text="TOOLKIT" as="h2" />
+    <div class="skills-grid">
+      {skills.map((s) => (
+        <div class="skills-col">
+          <span class="technical-sm skills-col__label">{s.group}</span>
+          <ul class="skills-col__list body-md">
+            {s.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dot-red {
+    color: var(--color-signal);
+  }
+
+  .page-head {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 80px;
+    padding-bottom: 48px;
+    max-width: 720px;
+  }
+
+  .page-head__lede {
+    color: var(--color-on-surface-variant);
+  }
+
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 48px;
+    padding-bottom: 64px;
+  }
+
+  .bio-col {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: fit-content;
+  }
+
+  .bio-col__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--color-surface-container-highest);
+    border: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .bio-col__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .bio-col__label {
+    color: var(--color-signal);
+    text-transform: uppercase;
+  }
+
+  .bio-col__role {
+    font-weight: 700;
+  }
+
+  .bio-col__sub {
+    color: var(--color-on-surface-variant);
+  }
+
+  .bio-col-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 620px;
+  }
+
+  .bio-col-text p {
+    color: var(--color-on-surface-variant);
+  }
+
+  .bio-col-text .link-underline {
+    width: fit-content;
+    margin-top: 8px;
+  }
+
+  .shell-hr {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .skills-section {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 48px;
+    padding-bottom: 96px;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .skills-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .skills-col__label {
+    color: var(--color-signal);
+    text-transform: uppercase;
+  }
+
+  .skills-col__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--color-on-surface-variant);
+  }
+
+  @media (max-width: 900px) {
+    .bio-grid {
+      grid-template-columns: 1fr;
+    }
+    .skills-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+interface Props {
+  date: Date;
+  title: string;
+  href: string;
+  active?: boolean;
+}
+
+const { date, title, href, active = false } = Astro.props;
+
+const formatted = date
+  .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+  .toUpperCase();
+---
+
+<article class="log-entry">
+  <span class:list={['dot', { signal: active }]} aria-hidden="true"></span>
+  <div class="log-entry__body">
+    <span class="technical-sm log-entry__date">{formatted}</span>
+    <h3 class="label-md log-entry__title">{title}</h3>
+  </div>
+  <a href={href} class="technical-sm log-entry__read">READ →</a>
+</article>
+
+<style>
+  .log-entry {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding-left: 8px;
+  }
+
+  .log-entry .dot {
+    margin-top: 4px;
+  }
+
+  .log-entry__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .log-entry__date,
+  .log-entry__read {
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+  }
+
+  .log-entry__title {
+    color: var(--color-on-background);
+    font-weight: 500;
+  }
+
+  .log-entry__read {
+    white-space: nowrap;
+  }
+
+  .log-entry:hover .log-entry__title,
+  .log-entry:hover .log-entry__read {
+    color: var(--color-signal);
+  }
+</style>

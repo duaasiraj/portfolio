@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Alex Chen — CS student building at the intersection of AI, systems, and the natural world.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta name="description" content={description} />
+    <title>{title} · Alex Chen</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="page-main">
+      <slot />
+    </main>
+    <Footer />
+
+    <div class="cursor-ring" aria-hidden="true"></div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+
+    <script>
+      const ring = document.querySelector('.cursor-ring') as HTMLElement | null;
+      const dot = document.querySelector('.cursor-dot') as HTMLElement | null;
+
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (ring && dot && canHover && !reduceMotion) {
+        document.body.classList.add('custom-cursor-active');
+
+        let ringX = 0, ringY = 0;
+        let mouseX = 0, mouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+        });
+
+        // Ring trails slightly behind the dot for a "targeting" feel
+        function animateRing() {
+          ringX += (mouseX - ringX) * 0.2;
+          ringY += (mouseY - ringY) * 0.2;
+          ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+          requestAnimationFrame(animateRing);
+        }
+        requestAnimationFrame(animateRing);
+
+        const interactiveSelector = 'a, button, [role="button"], input, textarea';
+
+        document.addEventListener('mouseover', (e) => {
+          if ((e.target as HTMLElement)?.closest?.(interactiveSelector)) {
+            ring.classList.add('cursor-ring--active');
+          }
+        });
+        document.addEventListener('mouseout', (e) => {
+          if ((e.target as HTMLElement)?.closest?.(interactiveSelector)) {
+            ring.classList.remove('cursor-ring--active');
+          }
+        });
+
+        document.addEventListener('mousedown', () => ring.classList.add('cursor-ring--down'));
+        document.addEventListener('mouseup', () => ring.classList.remove('cursor-ring--down'));
+      }
+    </script>
+  </body>
+</html>

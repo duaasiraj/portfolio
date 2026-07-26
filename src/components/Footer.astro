@@ -1,0 +1,59 @@
+---
+const socials = [
+  { label: 'GITHUB', href: 'https://github.com/your-username' },
+  { label: 'LINKEDIN', href: 'https://linkedin.com/in/your-username' },
+  { label: 'TWITTER', href: 'https://twitter.com/your-username' },
+];
+---
+
+<footer class="footer">
+  <div class="shell footer__inner">
+    <span class="label-caps">BUILT WITH INTENTION</span>
+
+    <span class="footer__mark" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="3" fill="#000"/>
+        <circle cx="10" cy="10" r="9" stroke="#000" stroke-width="0.5"/>
+      </svg>
+    </span>
+
+    <nav class="footer__socials" aria-label="Social links">
+      {socials.map((s) => (
+        <a href={s.href} target="_blank" rel="noopener noreferrer" class="technical-sm footer__social">
+          {s.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-surface);
+    border-top: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .footer__socials {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer__social {
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+  }
+
+  .footer__social:hover {
+    color: var(--color-on-background);
+  }
+</style>

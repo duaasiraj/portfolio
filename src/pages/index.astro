@@ -1,0 +1,455 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import LogEntry from '../components/LogEntry.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+const allProjects = (await getCollection('projects'))
+  .sort((a, b) => a.data.index.localeCompare(b.data.index))
+  .slice(0, 3);
+
+const allLogs = (await getCollection('logs'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const stats = [
+  { value: '04', label: 'YEARS\nLEARNING' },
+  { value: '06+', label: 'MAJOR\nPROJECTS' },
+  { value: '01', label: 'RESEARCH\nINTERNSHIP' },
+  { value: '∞', label: 'QUESTIONS\nLEFT' },
+];
+---
+
+<BaseLayout title="Home">
+  <section class="shell hero">
+    <div class="hero__copy">
+      <SectionLabel text="MISSION 01" />
+
+      <h1 class="display-lg hero__title">
+        I build things<br />
+        to understand<br />
+        how they work<span class="dot-red">.</span>
+      </h1>
+
+      <p class="body-md hero__lede">
+        Exploring the intersection of artificial intelligence, systems, and the natural world.
+      </p>
+
+      <a href={`${base}mission-log/`} class="link-underline hero__cta">VIEW LOGBOOK →</a>
+
+      <hr class="hr hero__divider" />
+
+      <dl class="hero__stats">
+        {stats.map((s, i) => (
+          <div class="hero__stat">
+            <dt class="headline-md">{s.value}</dt>
+            <dd class="technical-sm">
+              {s.label.split('\n').map((line) => <span>{line}<br/></span>)}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img">
+        <rect x="0" y="0" width="600" height="600" fill="#ffffff" />
+        <!-- grid -->
+        <g stroke="#c4c7c7" stroke-width="0.5">
+          <line x1="150" y1="0" x2="150" y2="600" />
+          <line x1="300" y1="0" x2="300" y2="600" />
+          <line x1="450" y1="0" x2="450" y2="600" />
+          <line x1="0" y1="150" x2="600" y2="150" />
+          <line x1="0" y1="300" x2="600" y2="300" />
+          <line x1="0" y1="450" x2="600" y2="450" />
+        </g>
+        <!-- satellite band -->
+        <rect x="-50" y="180" width="900" height="70" transform="rotate(-28 300 300)" fill="#0a0a0a" opacity="0.92" />
+        <!-- planet -->
+        <circle cx="330" cy="330" r="180" fill="#141414" />
+        <circle cx="270" cy="270" r="18" fill="#050505" opacity="0.6" />
+        <circle cx="380" cy="230" r="10" fill="#050505" opacity="0.6" />
+        <circle cx="410" cy="360" r="26" fill="#050505" opacity="0.5" />
+        <circle cx="300" cy="400" r="9" fill="#050505" opacity="0.6" />
+        <!-- orbit path -->
+        <ellipse cx="300" cy="320" rx="230" ry="130" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 6" transform="rotate(-8 300 320)" />
+        <!-- red marker -->
+        <circle cx="330" cy="290" r="4" fill="#b7102a" />
+        <!-- crosses -->
+        <g stroke="#1c1c19" stroke-width="1">
+          <path d="M75 350 L85 350 M80 345 L80 355" />
+          <path d="M470 470 L480 470 M475 465 L475 475" />
+        </g>
+      </svg>
+
+      <div class="hero__overlay technical-sm">
+        <div class="overlay-row">
+          <span>DISTANCE</span>
+          <span class="overlay-value">1.496 × 10¹¹ m</span>
+        </div>
+        <div class="overlay-row">
+          <span>STATUS</span>
+          <span class="overlay-value signal">LEARNING</span>
+        </div>
+        <div class="overlay-row">
+          <span>SIGNAL</span>
+          <span class="overlay-value">↗ ▮</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell experiments">
+    <div class="experiments__head">
+      <SectionLabel text="SELECTED EXPERIMENTS" as="h2" />
+      <a href={`${base}projects/`} class="link-underline">VIEW ALL PROJECTS →</a>
+    </div>
+
+    <div class="experiments__grid">
+      {allProjects.map((p) => (
+        <ProjectCard
+          index={p.data.index}
+          title={p.data.title}
+          summary={p.data.summary}
+          stack={p.data.stack}
+          href={`${base}projects/${p.slug}/`}
+          githubUrl={p.data.githubUrl}
+        />
+      ))}
+
+      <a href={`${base}projects/`} class="proj-card proj-card--more">
+        <div class="proj-card__top">
+          <span class="technical-sm proj-card__index">04</span>
+          <span class="proj-card__icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 11L11 3M11 3H4M11 3V10" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </span>
+        </div>
+        <div class="proj-card__body">
+          <h3 class="headline-md">More experiments</h3>
+          <p class="label-md">Tiny projects, strange ideas, useful rabbit holes.</p>
+        </div>
+        <div class="proj-card__meta technical-sm">ALWAYS ONGOING</div>
+      </a>
+    </div>
+  </section>
+
+  <hr class="hr shell-hr" />
+
+  <section class="shell lower-grid">
+    <div class="lower-col">
+      <SectionLabel text="MISSION LOG" />
+      <div class="lower-col__logs">
+        {allLogs.map((log, i) => (
+          <LogEntry
+            date={log.data.date}
+            title={log.data.title}
+            href={`${base}mission-log/${log.slug}/`}
+            active={i === 0}
+          />
+        ))}
+      </div>
+      <a href={`${base}mission-log/`} class="link-underline">MORE LOGS →</a>
+    </div>
+
+    <div class="hr-v-wrap" aria-hidden="true"><div class="hr-v"></div></div>
+
+    <div class="lower-col">
+      <SectionLabel text="CURRENT COORDINATES" />
+      <h2 class="headline-md">Curiosity is<br />the best compass.</h2>
+      <div class="coords-visual" aria-hidden="true">
+        <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="160" fill="#e5e2dd" opacity="0.5" />
+          <g stroke="#c4c7c7" stroke-width="0.5">
+            <circle cx="150" cy="80" r="20" fill="none" />
+            <circle cx="150" cy="80" r="45" fill="none" />
+            <circle cx="150" cy="80" r="70" fill="none" />
+          </g>
+          <path d="M140 70 L150 90 M150 90 L160 65" stroke="#b7102a" stroke-width="1.5" fill="none" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="hr-v-wrap" aria-hidden="true"><div class="hr-v"></div></div>
+
+    <div class="lower-col">
+      <SectionLabel text="ABOUT ME" />
+      <p class="label-md">
+        Computer science student building things that sit at the edge of AI, systems, and the real world.
+      </p>
+      <a href={`${base}about/`} class="link-underline">MORE ABOUT ME →</a>
+
+      <div class="about-card card">
+        <div class="about-card__image" aria-hidden="true"></div>
+        <div class="about-card__body">
+          <span class="technical-sm about-card__label">CURRENTLY:</span>
+          <span class="label-md about-card__role">ML Research Intern @ EcoMuhafiz</span>
+          <span class="technical-sm about-card__sub">Exploring · Learning · Building</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding-top: 96px;
+    padding-bottom: 96px;
+    align-items: center;
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 560px;
+  }
+
+  .hero__title {
+    color: var(--color-on-background);
+  }
+
+  .dot-red {
+    color: var(--color-signal);
+  }
+
+  .hero__lede {
+    max-width: 448px;
+    color: var(--color-on-surface-variant);
+  }
+
+  .hero__cta {
+    width: fit-content;
+  }
+
+  .hero__divider {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 0;
+  }
+
+  .hero__stat dt {
+    color: var(--color-on-background);
+  }
+
+  .hero__stat dd {
+    margin: 4px 0 0;
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+  }
+
+  .hero__visual {
+    position: relative;
+    border: 1px solid var(--color-outline-variant);
+    background: var(--color-surface-container-low);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+    background: rgba(253, 249, 244, 0.85);
+    border: 1px solid var(--color-outline-variant);
+    backdrop-filter: blur(2px);
+  }
+
+  .overlay-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+  }
+
+  .overlay-value {
+    color: var(--color-on-background);
+  }
+
+  .overlay-value.signal {
+    color: var(--color-signal);
+  }
+
+  .experiments {
+    padding-top: 64px;
+    padding-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .experiments__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .experiments__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .proj-card--more {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px;
+    min-height: 320px;
+    background: var(--color-surface-container-low);
+    border: var(--hairline) solid var(--color-outline-variant);
+    color: inherit;
+  }
+
+  .proj-card--more:hover {
+    border-color: var(--color-on-background);
+  }
+
+  .proj-card--more .proj-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .proj-card--more .proj-card__index {
+    font-family: var(--font-mono);
+    font-size: var(--fs-technical-sm);
+    color: var(--color-signal);
+  }
+
+  .proj-card--more .proj-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .proj-card--more .proj-card__body h3 {
+    text-transform: uppercase;
+  }
+
+  .proj-card--more .proj-card__body p {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label-md);
+    color: var(--color-on-surface-variant);
+  }
+
+  .proj-card--more .proj-card__meta {
+    padding-top: 16px;
+    border-top: var(--hairline) solid var(--color-outline-variant);
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+
+  .shell-hr {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .lower-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 48px;
+    padding-top: 48px;
+    padding-bottom: 96px;
+  }
+
+  .lower-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .lower-col__logs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hr-v-wrap {
+    display: flex;
+  }
+
+  .coords-visual {
+    opacity: 0.6;
+  }
+
+  .about-card {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about-card__image {
+    width: 100%;
+    aspect-ratio: 269 / 128;
+    background: var(--color-surface-container-highest);
+    border: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .about-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .about-card__label {
+    color: var(--color-signal);
+    text-transform: uppercase;
+  }
+
+  .about-card__role {
+    color: var(--color-on-background);
+    font-weight: 700;
+  }
+
+  .about-card__sub {
+    color: var(--color-on-surface-variant);
+  }
+
+  @media (max-width: 1024px) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+    .experiments__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .lower-grid {
+      grid-template-columns: 1fr;
+    }
+    .hr-v-wrap {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero__stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .experiments__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

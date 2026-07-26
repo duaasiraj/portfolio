@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import LogEntry from '../../components/LogEntry.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+const logs = (await getCollection('logs')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout title="Mission Log" description="Field notes, half-finished thoughts, and things learned.">
+  <section class="shell page-head">
+    <SectionLabel text="MISSION LOG" />
+    <h1 class="display-lg page-head__title">Field notes<span class="dot-red">.</span></h1>
+    <p class="body-md page-head__lede">
+      Short entries logged along the way — what broke, what clicked, and what I'm still
+      trying to figure out.
+    </p>
+  </section>
+
+  <section class="shell log-list">
+    {logs.map((log, i) => (
+      <>
+        <LogEntry
+          date={log.data.date}
+          title={log.data.title}
+          href={`${base}mission-log/${log.slug}/`}
+          active={i === 0}
+        />
+        {i < logs.length - 1 && <hr class="hr" />}
+      </>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .dot-red {
+    color: var(--color-signal);
+  }
+
+  .page-head {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 80px;
+    padding-bottom: 48px;
+    max-width: 720px;
+  }
+
+  .page-head__lede {
+    color: var(--color-on-surface-variant);
+  }
+
+  .log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 720px;
+    padding-bottom: 96px;
+  }
+</style>
