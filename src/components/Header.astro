@@ -5,12 +5,10 @@ const path = Astro.url.pathname;
 const navItems = [
   { label: 'MISSION LOG', href: `${base}mission-log/` },
   { label: 'PROJECTS', href: `${base}projects/` },
-  { label: 'RESEARCH', href: `${base}research/` },
   { label: 'ABOUT', href: `${base}about/` },
 ];
 
 function isActive(href: string) {
-  // normalize trailing slashes for comparison
   const norm = (s: string) => s.replace(/\/+$/, '/');
   return norm(path).startsWith(norm(href));
 }
@@ -19,7 +17,7 @@ function isActive(href: string) {
 <header class="nav">
   <div class="shell nav__inner">
     <a href={base} class="nav__brand">
-      <span class="nav__brand-name headline-md">ALEX_CHEN<span class="dot-red">.</span></span>
+      <span class="nav__brand-name headline-md">DUAA_SIRAJ<span class="dot-red">.</span></span>
       <span class="nav__brand-sub technical-sm">CS STUDENT / AI &amp; SYSTEMS</span>
     </a>
 
