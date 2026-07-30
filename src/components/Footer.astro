@@ -1,25 +1,24 @@
 ---
+import { site } from '../data/site';
 import { socialLinks } from '../data/socials';
 ---
 
 <footer class="footer">
   <div class="shell footer__inner">
-    <span class="label-caps">BUILT WITH INTENTION</span>
-
-    <span class="footer__mark" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="10" cy="10" r="3" fill="#000"/>
-        <circle cx="10" cy="10" r="9" stroke="#000" stroke-width="0.5"/>
-      </svg>
-    </span>
-
-    <nav class="footer__socials" aria-label="Social links">
-      {socialLinks.map((s) => (
-        <a href={s.href} target="_blank" rel="noopener noreferrer" class="technical-sm footer__social">
-          {s.label}
-        </a>
-      ))}
-    </nav>
+    <div class="footer__about">
+      <span class="label-caps">ABOUT ME</span>
+      <span class="technical-sm">{site.name} · {site.title}</span>
+    </div>
+    <div class="footer__links">
+      <a href={`${import.meta.env.BASE_URL}about/`} class="footer__link technical-sm">MORE ABOUT ME →</a>
+      <nav class="footer__socials" aria-label="Social links">
+        {socialLinks.map((social) => (
+          <a href={social.href} target="_blank" rel="noopener noreferrer" class="footer__social technical-sm">
+            {social.label}
+          </a>
+        ))}
+      </nav>
+    </div>
   </div>
 </footer>
 
@@ -34,22 +33,52 @@ import { socialLinks } from '../data/socials';
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 24px;
-    padding-top: 48px;
-    padding-bottom: 48px;
+    gap: 16px;
+    padding-top: 24px;
+    padding-bottom: 24px;
   }
 
-  .footer__socials {
+  .footer__about {
     display: flex;
-    gap: 24px;
+    flex-direction: column;
+    gap: 4px;
   }
 
+  .footer__about .label-caps {
+    color: var(--color-signal);
+  }
+
+  .footer__about .technical-sm,
+  .footer__link,
   .footer__social {
     color: var(--color-on-surface-variant);
     text-transform: uppercase;
   }
 
+  .footer__links,
+  .footer__socials {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .footer__links {
+    justify-content: flex-end;
+    gap: 24px;
+  }
+
+  .footer__socials {
+    gap: 16px;
+  }
+
+  .footer__link:hover,
   .footer__social:hover {
     color: var(--color-on-background);
+  }
+
+  @media (max-width: 640px) {
+    .footer__inner,
+    .footer__links { align-items: flex-start; flex-direction: column; }
+    .footer__links { gap: 12px; }
   }
 </style>

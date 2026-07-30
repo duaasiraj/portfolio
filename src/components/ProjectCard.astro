@@ -12,20 +12,22 @@ interface Props {
 const { index, title, summary, stack, href, githubUrl, variant = 'default' } = Astro.props;
 ---
 
-<a href={href} class:list={['proj-card', `proj-card--${variant}`]}>
+<article class:list={['proj-card', `proj-card--${variant}`]}>
+  <a href={href} class="proj-card__details-link" aria-label={`Read the ${title} project overview`}></a>
   <div class="proj-card__top">
-    <span class="technical-sm proj-card__index">{index}</span>
-
-    <span class="proj-card__icon" aria-hidden="true">
-      <svg class="icon-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 11L11 3M11 3H4M11 3V10" stroke="currentColor" stroke-width="1.2"/>
-      </svg>
-
-      {githubUrl && (
-        <svg class="icon-github" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    {githubUrl ? (
+      <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="proj-card__github" aria-label={`View ${title} on GitHub`}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.68 0 8.22c0 3.63 2.29 6.71 5.47 7.8.4.08.55-.18.55-.4 0-.19-.01-.83-.01-1.51-2.01.38-2.53-.5-2.69-.96-.09-.24-.48-.96-.82-1.16-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.24 1.87.89 2.33.68.07-.53.28-.89.51-1.1-1.78-.2-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.03.08-2.15 0 0 .67-.22 2.2.84a7.4 7.4 0 0 1 4 0c1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.95.08 2.15.51.57.82 1.29.82 2.19 0 3.12-1.87 3.82-3.65 4.02.29.26.54.76.54 1.53 0 1.11-.01 2-.01 2.27 0 .22.15.48.55.4A8.23 8.23 0 0 0 16 8.22C16 3.68 12.42 0 8 0Z"/>
         </svg>
-      )}
+      </a>
+    ) : (
+      <span class="technical-sm proj-card__index">{index}</span>
+    )}
+    <span class="proj-card__icon" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 11L11 3M11 3H4M11 3V10" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
     </span>
   </div>
 
@@ -34,10 +36,8 @@ const { index, title, summary, stack, href, githubUrl, variant = 'default' } = A
     <p class="proj-card__summary label-md">{summary}</p>
   </div>
 
-  <div class="proj-card__meta technical-sm">
-    {stack.join(' · ')}
-  </div>
-</a>
+  <div class="proj-card__meta technical-sm">{stack.join(' · ')}</div>
+</article>
 
 <style>
   .proj-card {
@@ -54,72 +54,41 @@ const { index, title, summary, stack, href, githubUrl, variant = 'default' } = A
     overflow: hidden;
   }
 
-  .proj-card--wide {
-    min-height: 260px;
-  }
+  .proj-card--wide { min-height: 260px; }
 
-  .proj-card__top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
+  .proj-card__details-link { position: absolute; inset: 0; z-index: 1; }
+  .proj-card__details-link:focus-visible { outline: 2px solid var(--color-signal); outline-offset: -2px; }
 
-  .proj-card__index {
-    color: var(--color-signal);
-  }
+  .proj-card__top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .proj-card__index { color: var(--color-signal); }
 
-  .proj-card__icon {
+  .proj-card__github {
     position: relative;
-    width: 18px;
-    height: 18px;
-    color: var(--color-on-background);
-  }
-
-  .icon-arrow,
-  .icon-github {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: opacity 150ms ease, transform 150ms ease;
-  }
-
-  .icon-github {
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin: -6px;
+    color: var(--color-on-surface-variant);
     opacity: 0;
     transform: translateY(3px);
+    transition: opacity 150ms ease, transform 150ms ease, color 150ms ease;
   }
 
-  .proj-card:hover .icon-arrow {
-    opacity: 0;
-    transform: translateY(-3px);
-  }
+  .proj-card:hover .proj-card__github,
+  .proj-card:focus-within .proj-card__github { opacity: 1; transform: translateY(0); }
+  .proj-card__github:hover, .proj-card__github:focus-visible { color: var(--color-signal); }
 
-  .proj-card:hover .icon-github {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .proj-card__body {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .proj-card__title {
-    text-transform: uppercase;
-  }
-
-  .proj-card__summary {
-    color: var(--color-on-surface-variant);
-  }
-
+  .proj-card__icon { width: 18px; height: 18px; color: var(--color-on-background); }
+  .proj-card__body { display: flex; flex-direction: column; gap: 8px; }
+  .proj-card__title { text-transform: uppercase; }
+  .proj-card__summary { color: var(--color-on-surface-variant); }
   .proj-card__meta {
     color: var(--color-on-surface-variant);
     padding-top: 16px;
     border-top: var(--hairline) solid var(--color-outline-variant);
     text-transform: uppercase;
   }
-
-  .proj-card:hover {
-    border-color: var(--color-on-background);
-  }
+  .proj-card:hover { border-color: var(--color-on-background); }
 </style>

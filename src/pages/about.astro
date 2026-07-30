@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionLabel from '../components/SectionLabel.astro';
+import { site } from '../data/site';
 
 const skills = [
   { group: 'LANGUAGES', items: ['Python', 'TypeScript', 'C++', 'Rust (learning)'] },
@@ -10,10 +11,10 @@ const skills = [
 ];
 ---
 
-<BaseLayout title="About" description="About Alex Chen — CS student, AI & systems.">
+<BaseLayout title="About" description={`About ${site.name} — CS student, AI & systems.`}>
   <section class="shell page-head">
     <SectionLabel text="ABOUT ME" />
-    <h1 class="display-lg page-head__title">Alex Chen<span class="dot-red">.</span></h1>
+    <h1 class="display-lg page-head__title">{site.name}<span class="dot-red">.</span></h1>
     <p class="body-lg page-head__lede">
       Computer science student building things that sit at the edge of AI, systems, and the
       real world. I'd rather build a small, broken version of something than read about the
@@ -23,7 +24,9 @@ const skills = [
 
   <section class="shell bio-grid">
     <div class="bio-col card">
-      <div class="bio-col__image" aria-hidden="true"></div>
+      <div class="bio-col__image">
+        <img src={`${import.meta.env.BASE_URL}assets/profile.jpg`} alt={site.name} />
+      </div>
       <div class="bio-col__body">
         <span class="technical-sm bio-col__label">CURRENTLY:</span>
         <span class="label-md bio-col__role">ML Research Intern @ EcoMuhafiz</span>
@@ -100,8 +103,16 @@ const skills = [
   .bio-col__image {
     width: 100%;
     aspect-ratio: 4 / 3;
+    padding: 8px 8px 28px;
     background: var(--color-surface-container-highest);
     border: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .bio-col__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
   }
 
   .bio-col__body {

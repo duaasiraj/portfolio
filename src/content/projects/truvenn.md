@@ -7,7 +7,6 @@ status: "active"
 date: 2026-01-20
 featured: true
 coordinates: "AGENT/NEGOTIATE"
-githubUrl: "https://github.com/your-username/truvenn"
 ---
 
 ## Overview

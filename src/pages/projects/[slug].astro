@@ -33,7 +33,7 @@ const dateStr = project.data.date
       <h1 class="display-lg project__title">{project.data.title}<span class="dot-red">.</span></h1>
       <p class="body-lg project__summary">{project.data.summary}</p>
 
-      <div class="project__actions">
+      <div class="project__actions project__actions--top">
         {project.data.githubUrl && (
           <a href={project.data.githubUrl} target="_blank" rel="noopener noreferrer" class="btn">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -76,6 +76,13 @@ const dateStr = project.data.date
     <div class="project__content body-md">
       <Content />
     </div>
+
+    {(project.data.githubUrl || project.data.liveUrl) && (
+      <div class="project__actions project__actions--bottom">
+        {project.data.githubUrl && <a href={project.data.githubUrl} target="_blank" rel="noopener noreferrer" class="btn">VIEW SOURCE</a>}
+        {project.data.liveUrl && <a href={project.data.liveUrl} target="_blank" rel="noopener noreferrer" class="btn">VIEW LIVE →</a>}
+      </div>
+    )}
   </article>
 </BaseLayout>
 
@@ -119,6 +126,10 @@ const dateStr = project.data.date
     display: flex;
     gap: 12px;
     padding-top: 8px;
+  }
+
+  .project__actions--top {
+    display: none;
   }
 
   .project__meta-row {

@@ -18,9 +18,10 @@ body {
   line-height: var(--lh-relaxed);
   color: var(--color-on-background);
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 2.5%, rgba(0, 0, 0, 0) 2.5%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.03) 2.5%, rgba(0, 0, 0, 0) 2.5%),
+    linear-gradient(rgba(28, 28, 25, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 28, 25, 0.045) 1px, transparent 1px),
     var(--color-background);
+  background-size: 36px 36px;
 }
 
 img,

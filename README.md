@@ -1,4 +1,4 @@
-# Alex Chen — Portfolio
+# Duaa Siraj — Portfolio
 
 Astro + TypeScript + vanilla CSS. No Tailwind, no React SPA. Styled per `design.md`
 ("Scientific Narrative System").

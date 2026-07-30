@@ -7,7 +7,6 @@ status: "active"
 date: 2026-03-01
 featured: true
 coordinates: "GRAD/ENGINE"
-githubUrl: "https://github.com/your-username/nanograd"
 ---
 
 ## Overview
