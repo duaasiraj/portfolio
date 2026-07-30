@@ -58,7 +58,7 @@ const stats = [
     </div>
 
     <div class="hero__visual">
-      <img src={`${base}assets/backgroundHero.jpg`} alt="" class="hero__space" />
+      <img src={`${base}assets/profile.jpg`} alt={site.name} class="hero__portrait" />
       <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img">
         <rect x="0" y="0" width="600" height="600" fill="#ffffff" />
         <!-- grid -->
@@ -190,35 +190,44 @@ const stats = [
 </BaseLayout>
 
 <style>
-  .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    padding-top: 64px;
-    padding-bottom: 80px;
-    align-items: center;
-  }
+ .hero {
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(380px, 520px);
+
+  align-items: center;
+  gap: clamp(48px, 6vw, 96px);
+
+  min-height: calc(100vh - 82px);
+
+  padding-block: 16px;
+}
 
   .hero__copy {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    max-width: 560px;
+    gap: 28px;
+    max-width: 640px;
   }
 
-  .hero__title {
-    color: var(--color-on-background);
-  }
+  .hero__title{
+    font-size:clamp(3.5rem,7vw,6.8rem);
+    line-height:.9;
+    letter-spacing:-.05em;
+    margin-bottom:8px;
+}
 
   .dot-red {
     color: var(--color-signal);
   }
 
-  .hero__lede {
-    max-width: 448px;
-    color: var(--color-on-surface-variant);
-  }
 
+.hero__lede{
+    max-width:520px;
+
+    font-size:1.08rem;
+    color: var(--color-on-surface-variant);
+    line-height:1.8;
+}
   .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
   .hero__projects-btn { background: var(--color-primary); color: var(--color-on-primary); }
@@ -252,19 +261,22 @@ const stats = [
 
   .hero__visual {
     position: relative;
-    border: 1px solid var(--color-outline-variant);
-    background: var(--color-surface-container-low);
+    border: 0;
+    background: transparent;
     aspect-ratio: 4 / 5;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .hero__space {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    inset: 6px;
+    width: auto;
+    height: auto;
     object-fit: cover;
-    filter: grayscale(1) contrast(1.08);
+    opacity: 0.88;
+    filter: grayscale(1) contrast(1.12) brightness(0.7);
+    box-shadow: 0 0 52px 20px rgba(28, 28, 25, 0.18);
+    mask-image: radial-gradient(ellipse 72% 72% at center, #000 55%, transparent 100%);
   }
 
   .hero__visual > svg { display: none; }
@@ -277,30 +289,27 @@ const stats = [
     flex-direction: column;
     gap: 10px;
     padding: 14px 16px;
-    background: rgba(253, 249, 244, 0.9);
-    border: 1px solid rgba(253, 249, 244, 0.65);
+    background: rgba(10, 10, 10, 0.7);
+    border: 1px solid rgba(253, 249, 244, 0.45);
     backdrop-filter: blur(2px);
   }
 
   .hero__identity {
     position: absolute;
-    bottom: 22px;
-    left: 22px;
-    display: flex;
-    align-items: flex-end;
-    gap: 12px;
-    max-width: calc(100% - 34px);
+    inset: 0;
+    display: grid;
+    place-items: center;
   }
 
   .hero__photo-frame {
     display: flex;
     flex-direction: column;
     gap: 7px;
-    width: 148px;
-    padding: 8px 8px 12px;
+    width: min(78%, 360px);
+    padding: 12px 12px 28px;
     background: #fffdf9;
     border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 8px 8px 0 rgba(28, 28, 25, 0.22);
+    box-shadow: 14px 18px 0 rgba(28, 28, 25, 0.35);
     transform: rotate(-2deg);
     flex: none;
   }
@@ -314,7 +323,7 @@ const stats = [
   }
 
   .hero__photo-caption {
-    color: var(--color-on-surface-variant);
+    color: var(--color-on-background);
     font-size: 9px;
     letter-spacing: 0.08em;
   }
@@ -323,16 +332,76 @@ const stats = [
     display: flex;
     flex-direction: column;
     gap: 2px;
-    color: var(--color-on-surface-variant);
+    color: rgba(253, 249, 244, 0.7);
     text-transform: uppercase;
   }
 
   .overlay-value {
-    color: var(--color-on-background);
+    color: var(--color-surface);
   }
 
   .overlay-value.signal {
     color: var(--color-signal);
+  }
+
+  /* Minimal technical portrait treatment: the portrait is the only focal point. */
+  .hero__visual{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+
+    position:relative;
+
+    background-image:
+      linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px);
+
+    background-size:32px 32px;
+}
+
+.hero__visual::before{
+    content:"";
+
+    position:absolute;
+
+    width:430px;
+    height:430px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(circle,
+        rgba(0,0,0,.07) 0%,
+        rgba(0,0,0,.03) 45%,
+        transparent 75%);
+
+    filter:blur(25px);
+
+    z-index:0;
+}
+
+  .hero__portrait{
+    position:relative;
+    z-index:2;
+
+    width:min(100%,420px);
+
+    aspect-ratio:4/5;
+
+    object-fit:cover;
+
+    border:1px solid var(--color-outline-variant);
+
+    filter:grayscale(.92);
+
+    box-shadow:
+        0 18px 42px rgba(0,0,0,.12);
+}
+
+  .hero__visual > svg,
+  .hero__overlay,
+  .hero__identity {
+    display: none;
   }
 
   .experiments {
