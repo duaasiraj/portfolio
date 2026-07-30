@@ -27,4 +27,17 @@ const logs = defineCollection({
   }),
 });
 
-export const collections = { projects, logs };
+const experience = defineCollection({
+  type: 'content',
+  schema: z.object({
+    role: z.string(),
+    org: z.string(),
+    location: z.string().optional(),
+    dateRange: z.string(), 
+    sortOrder: z.number(),
+    stack: z.array(z.string()).default([]),
+    kind: z.enum(['research', 'leadership']).default('research'),
+  }),
+});
+
+export const collections = { projects, logs, experience };

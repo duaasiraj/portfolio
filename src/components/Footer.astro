@@ -1,9 +1,5 @@
 ---
-const socials = [
-  { label: 'GITHUB', href: 'https://github.com/duaasiraj'},
-  { label: 'LINKEDIN', href: 'www.linkedin.com/in/duaa-siraj-68b6261b4' },
-  { label: 'EMAIL', href: 'mailto:duaasiraj37@gmail.com' },
-];
+import { socialLinks } from '../data/socials';
 ---
 
 <footer class="footer">
@@ -18,7 +14,7 @@ const socials = [
     </span>
 
     <nav class="footer__socials" aria-label="Social links">
-      {socials.map((s) => (
+      {socialLinks.map((s) => (
         <a href={s.href} target="_blank" rel="noopener noreferrer" class="technical-sm footer__social">
           {s.label}
         </a>

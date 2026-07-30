@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import ExperienceCard from '../components/ExperienceCard.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../data/site';
+
+// To add a new role: drop a .md file in src/content/experience/ with the
+// frontmatter fields defined in src/content/config.ts. sortOrder controls
+// position (lower = earlier in the list).
+const research = (await getCollection('experience', ({ data }) => data.kind === 'research'))
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+
+const leadership = (await getCollection('experience', ({ data }) => data.kind === 'leadership'))
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+---
+
+<BaseLayout title="Experience" description={`Experience — ${site.name}.`}>
+  <section class="shell page-head">
+    <SectionLabel text="EXPERIENCE" />
+    <h1 class="display-lg page-head__title">Where I've<br />worked<span class="dot-red">.</span></h1>
+    <p class="body-md page-head__lede">
+      Research and leadership roles, most recent first. Future internships slot in right at the top.
+    </p>
+  </section>
+
+  <section class="shell timeline-section">
+    <SectionLabel text="RESEARCH & INTERNSHIPS" as="h2" />
+    <div class="timeline">
+      {research.map((entry, i) => (
+        <ExperienceCard entry={entry} isLast={i === research.length - 1} />
+      ))}
+    </div>
+  </section>
+
+  <hr class="hr shell-hr" />
+
+  <section class="shell timeline-section">
+    <SectionLabel text="LEADERSHIP & EXTRACURRICULAR" as="h2" />
+    <div class="timeline">
+      {leadership.map((entry, i) => (
+        <ExperienceCard entry={entry} isLast={i === leadership.length - 1} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dot-red {
+    color: var(--color-signal);
+  }
+
+  .page-head {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 80px;
+    padding-bottom: 48px;
+    max-width: 720px;
+  }
+
+  .page-head__lede {
+    color: var(--color-on-surface-variant);
+  }
+
+  .timeline-section {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 48px;
+    padding-bottom: 64px;
+    max-width: 780px;
+  }
+
+  .shell-hr {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+</style>

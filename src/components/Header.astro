@@ -1,16 +1,12 @@
 ---
+import { navItems } from '../data/nav';
+
 const base = import.meta.env.BASE_URL;
 const path = Astro.url.pathname;
 
-const navItems = [
-  { label: 'MISSION LOG', href: `${base}mission-log/` },
-  { label: 'PROJECTS', href: `${base}projects/` },
-  { label: 'ABOUT', href: `${base}about/` },
-];
-
 function isActive(href: string) {
   const norm = (s: string) => s.replace(/\/+$/, '/');
-  return norm(path).startsWith(norm(href));
+  return norm(path).startsWith(norm(`${base}${href}`));
 }
 ---
 
@@ -24,7 +20,7 @@ function isActive(href: string) {
     <nav class="nav__links" aria-label="Primary">
       {navItems.map((item) => (
         <a
-          href={item.href}
+          href={`${base}${item.href}`}
           class:list={['nav__link', 'label-caps', { 'nav__link--active': isActive(item.href) }]}
         >
           {item.label}
