@@ -1,6 +1,6 @@
 # Duaa Siraj — Portfolio
 
-[Live Demo](link)
+[Live Link](https://duaasiraj.github.io/portfolio/)
 
 Personal portfolio website showcasing my work across AI, machine learning, systems programming, and software engineering.
 
