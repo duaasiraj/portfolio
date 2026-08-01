@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://duaasiraj.github.io',
-  base: '/portfolio',
+  base: '/portfolio/',
   trailingSlash: 'ignore',
   build: {
     format: 'directory',
