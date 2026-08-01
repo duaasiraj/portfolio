@@ -3,11 +3,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import { site } from '../data/site';
 
+const base = import.meta.env.BASE_URL;
+
 const skills = [
-  { group: 'LANGUAGES', items: ['Python', 'TypeScript', 'C++', 'Rust (learning)'] },
+  { group: 'LANGUAGES', items: ['Python', 'TypeScript', 'C++', 'C'] },
   { group: 'ML / DATA', items: ['PyTorch', 'NumPy', 'scikit-learn', 'Pandas'] },
-  { group: 'SYSTEMS', items: ['Linux', 'Docker', 'Distributed systems basics'] },
-  { group: 'WEB', items: ['Astro', 'React', 'Node.js'] },
+  { group: 'SYSTEMS', items: ['Linux - Ubuntu'] },
+  { group: 'WEB', items: ['Astro', 'React', 'Node.js','Express.js','FastAPI'] },
+];
+
+const socials = [
+  {
+    label: 'GitHub',
+    href: 'https://github.com/duaasiraj',
+    icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>`,
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/duaa-siraj-68b6261b4/',
+    icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`,
+  },
+  {
+    label: 'Email',
+    href: 'mailto:duaasiraj37@gmail.com',
+    icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
+  },
 ];
 ---
 
@@ -16,37 +36,64 @@ const skills = [
     <SectionLabel text="ABOUT ME" />
     <h1 class="display-lg page-head__title">{site.name}<span class="dot-red">.</span></h1>
     <p class="body-lg page-head__lede">
-      Computer science student building things that sit at the edge of AI, systems, and the
-      real world. I'd rather build a small, broken version of something than read about the
-      polished one.
+      The CS kid who goes in with confidence that she'll figure it out. Not overconfidence —
+      trust that with the right curiosity and research, anything can be learned.
     </p>
+
+    <div class="social-badges">
+      {socials.map((s) => (
+        <a href={s.href} target={s.href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer" class="social-badge technical-sm">
+          <span class="social-badge__icon" set:html={s.icon} />
+          {s.label}
+        </a>
+      ))}
+    </div>
   </section>
 
   <section class="shell bio-grid">
     <div class="bio-col card">
       <div class="bio-col__image">
-        <img src={`${import.meta.env.BASE_URL}assets/profile.jpg`} alt={site.name} />
+        <img src={`${base}assets/profile.jpg`} alt={site.name} />
       </div>
       <div class="bio-col__body">
         <span class="technical-sm bio-col__label">CURRENTLY:</span>
-        <span class="label-md bio-col__role">ML Research Intern @ EcoMuhafiz</span>
+        <span class="label-md bio-col__role">ML Research Intern @ EcoMuhafiz </span>
         <span class="technical-sm bio-col__sub">Exploring · Learning · Building</span>
+      </div>
+      <div class="bio-col__status">
+        <span class="technical-sm status-label">OPEN TO</span>
+        <div class="status-tags">
+          <span class="status-tag">Research</span>
+          <span class="status-tag">SWE</span>
+          <span class="status-tag">AI / ML</span>
+          <span class="status-tag">Backend</span>
+        </div>
       </div>
     </div>
 
     <div class="bio-col-text">
       <p class="body-md">
-        I'm a CS student focused on AI and systems — the space where a model has to survive
-        contact with real data, real latency, and real failure modes. Most of what I build
-        starts as "how does this actually work under the hood," which is how projects like
-        Nanograd (an autodiff engine from scratch) end up happening.
+        I love working across domains — machine learning, AI, software and systems programming,
+        full-stack development, even computational biophysics. Choosing CS was never about
+        picking a lane. It was about having the freedom to discover and build anything and everything.
       </p>
       <p class="body-md">
-        Outside of coursework, I'm currently interning on the ML team at EcoMuhafiz, working
-        on bioacoustic classification for wildlife monitoring. I write up what I learn — the
-        wins and the dead ends — in the Mission Log.
+        I'm a sophomore at FAST-NUCES Karachi, currently interning as an ML Research Intern at
+        EcoMuhafiz, working on AI-powered biodiversity monitoring for forest and wildlife
+        conservation in Pakistan.
       </p>
-      <a href="mailto:you@example.com" class="link-underline">GET IN TOUCH →</a>
+      <p class="body-md">
+        On the projects side: I've built an autodiff engine from scratch and trained my own neural
+        network on it — hitting 95.6% test accuracy on MNIST. An OS-level multi-client chat server
+        in C. A PERN-stack bug tracking tool. And FastAPI apps that wire ML models directly into
+        web systems.
+      </p>
+      <p class="body-md">
+        Right now I'm focused on strengthening fundamentals, shipping meaningful projects, and growing
+        into a well-rounded engineer. A jack of all trades, and hopefully master of one. If you need
+        someone ready to dive into a messy problem and learn along the way — that's exactly where I hop in.
+      </p>
+      <a href="mailto:duaasiraj37@gmail.com" class="link-underline">GET IN TOUCH →</a>
     </div>
   </section>
 
@@ -83,11 +130,46 @@ const skills = [
 
   .page-head__lede {
     color: var(--color-on-surface-variant);
+    max-width: 600px;
   }
 
+  /* ── Social badges ── */
+  .social-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .social-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border: var(--hairline) solid var(--color-outline-variant);
+    background: var(--color-surface-container-low);
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .social-badge:hover {
+    border-color: var(--color-on-background);
+    color: var(--color-on-background);
+  }
+
+  .social-badge__icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Bio grid ── */
   .bio-grid {
     display: grid;
-    grid-template-columns: 340px 1fr;
+    grid-template-columns: 300px 1fr;
     gap: 48px;
     padding-bottom: 64px;
   }
@@ -119,6 +201,8 @@ const skills = [
     display: flex;
     flex-direction: column;
     gap: 4px;
+    padding-bottom: 12px;
+    border-bottom: var(--hairline) solid var(--color-outline-variant);
   }
 
   .bio-col__label {
@@ -134,20 +218,49 @@ const skills = [
     color: var(--color-on-surface-variant);
   }
 
+  .bio-col__status {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .status-label {
+    color: var(--color-signal);
+    text-transform: uppercase;
+  }
+
+  .status-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .status-tag {
+    font-family: var(--font-mono);
+    font-size: var(--fs-technical-sm);
+    padding: 3px 8px;
+    border: var(--hairline) solid var(--color-outline-variant);
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Bio text ── */
   .bio-col-text {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
     max-width: 620px;
   }
 
   .bio-col-text p {
     color: var(--color-on-surface-variant);
+    line-height: 1.75;
   }
 
   .bio-col-text .link-underline {
     width: fit-content;
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
   .shell-hr {
@@ -155,6 +268,7 @@ const skills = [
     margin: 0 auto;
   }
 
+  /* ── Toolkit ── */
   .skills-section {
     display: flex;
     flex-direction: column;
@@ -196,6 +310,13 @@ const skills = [
     }
     .skills-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .social-badges {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>

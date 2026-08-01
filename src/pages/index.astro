@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import AnimatedCurrent from '../components/AnimatedCurrent.astro';
+import ExperienceCard from '../components/ExperienceCard.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../data/site';
 
@@ -12,8 +13,20 @@ const allProjects = (await getCollection('projects'))
   .sort((a, b) => a.data.index.localeCompare(b.data.index))
   .slice(0, 3);
 
+const allExperience = (await getCollection('experience'))
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+
+const latestExperience = allExperience.slice(0, 1);
+
+const skills = [
+  { group: 'LANGUAGES', items: ['Python', 'TypeScript', 'C++', 'C'] },
+  { group: 'ML / DATA', items: ['PyTorch', 'NumPy', 'scikit-learn', 'Pandas'] },
+  { group: 'SYSTEMS', items: ['Linux - Ubuntu'] },
+  { group: 'WEB', items: ['Astro', 'React', 'Node.js', 'Express.js', 'FAST-API'] },
+];
+
 const stats = [
-  { value: '04', label: 'YEARS\nLEARNING' },
+  { value: '02', label: 'YEARS\nLEARNING' },
   { value: '06+', label: 'MAJOR\nPROJECTS' },
   { value: '01', label: 'RESEARCH\nINTERNSHIP' },
   { value: '∞', label: 'QUESTIONS\nLEFT' },
@@ -46,7 +59,7 @@ const stats = [
       <hr class="hr hero__divider" />
 
       <dl class="hero__stats">
-        {stats.map((s, i) => (
+        {stats.map((s) => (
           <div class="hero__stat">
             <dt class="headline-md">{s.value}</dt>
             <dd class="technical-sm">
@@ -61,7 +74,6 @@ const stats = [
       <img src={`${base}assets/profile.jpg`} alt={site.name} class="hero__portrait" />
       <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img">
         <rect x="0" y="0" width="600" height="600" fill="#ffffff" />
-        <!-- grid -->
         <g stroke="#c4c7c7" stroke-width="0.5">
           <line x1="150" y1="0" x2="150" y2="600" />
           <line x1="300" y1="0" x2="300" y2="600" />
@@ -70,19 +82,14 @@ const stats = [
           <line x1="0" y1="300" x2="600" y2="300" />
           <line x1="0" y1="450" x2="600" y2="450" />
         </g>
-        <!-- satellite band -->
         <rect x="-50" y="180" width="900" height="70" transform="rotate(-28 300 300)" fill="#0a0a0a" opacity="0.92" />
-        <!-- planet -->
         <circle cx="330" cy="330" r="180" fill="#141414" />
         <circle cx="270" cy="270" r="18" fill="#050505" opacity="0.6" />
         <circle cx="380" cy="230" r="10" fill="#050505" opacity="0.6" />
         <circle cx="410" cy="360" r="26" fill="#050505" opacity="0.5" />
         <circle cx="300" cy="400" r="9" fill="#050505" opacity="0.6" />
-        <!-- orbit path -->
         <ellipse cx="300" cy="320" rx="230" ry="130" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 6" transform="rotate(-8 300 320)" />
-        <!-- red marker -->
         <circle cx="330" cy="290" r="4" fill="#b7102a" />
-        <!-- crosses -->
         <g stroke="#1c1c19" stroke-width="1">
           <path d="M75 350 L85 350 M80 345 L80 355" />
           <path d="M470 470 L480 470 M475 465 L475 475" />
@@ -142,7 +149,7 @@ const stats = [
         </div>
         <div class="proj-card__body">
           <h3 class="headline-md">More experiments</h3>
-          <p class="label-md">Tiny projects, strange ideas, useful rabbit holes.</p>
+          <p class="label-md">More projects and experiments from someone who lives for rabbit holes of tech :)</p>
         </div>
         <div class="proj-card__meta technical-sm">ALWAYS ONGOING</div>
       </a>
@@ -151,56 +158,73 @@ const stats = [
 
   <hr class="hr shell-hr" />
 
-  <section class="shell lower-grid">
-    <div class="lower-col">
-      <SectionLabel text="CURRENT COORDINATES" />
-      <h2 class="headline-md">Curiosity is<br />the best compass.</h2>
-      <div class="coords-visual" aria-hidden="true">
-        <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
-          <rect width="300" height="160" fill="#e5e2dd" opacity="0.5" />
-          <g stroke="#c4c7c7" stroke-width="0.5">
-            <circle cx="150" cy="80" r="20" fill="none" />
-            <circle cx="150" cy="80" r="45" fill="none" />
-            <circle cx="150" cy="80" r="70" fill="none" />
-          </g>
-          <path d="M140 70 L150 90 M150 90 L160 65" stroke="#b7102a" stroke-width="1.5" fill="none" />
-        </svg>
-      </div>
+  <section class="shell experience-section">
+    <div class="experience-section__head">
+      <SectionLabel text="EXPERIENCE" />
+      <a href={`${base}experience/`} class="link-underline">VIEW ALL →</a>
     </div>
 
-    <div class="hr-v-wrap" aria-hidden="true"><div class="hr-v"></div></div>
+    <div class="experience-section__body">
+      {latestExperience.map((entry) => (
+        <ExperienceCard entry={entry} isLast={true} />
+      ))}
+    </div>
 
-    <div class="lower-col">
+    {allExperience.length > 1 && (
+      <div class="experience-section__more">
+        <a href={`${base}experience/`} class="btn">VIEW ALL EXPERIENCE</a>
+      </div>
+    )}
+  </section>
+
+  <hr class="hr shell-hr" />
+
+  <section class="shell about-strip">
+    <div class="about-strip__col">
       <SectionLabel text="ABOUT ME" />
       <p class="label-md">
         Computer science student building things that sit at the edge of AI, systems, and the real world.
       </p>
       <a href={`${base}about/`} class="link-underline">MORE ABOUT ME →</a>
+    </div>
 
-      <div class="about-card card">
-        <div class="about-card__image" aria-hidden="true"></div>
-        <div class="about-card__body">
-          <span class="technical-sm about-card__label">CURRENTLY:</span>
-          <span class="label-md about-card__role">ML Research Intern @ EcoMuhafiz</span>
-          <span class="technical-sm about-card__sub">Exploring · Learning · Building</span>
+    <div class="about-strip__col">
+      <SectionLabel text="EDUCATION" />
+      <div class="edu-card card">
+        <div class="edu-card__body">
+          <span class="technical-sm edu-card__label">CURRENT</span>
+          <span class="label-md edu-card__role">BS Computer Science</span>
+          <span class="headline-md edu-card__org">FAST-NUCES</span>
+          <span class="technical-sm edu-card__sub">Junior Year · 2022 – Present</span>
         </div>
+      </div>
+    </div>
+
+    <div class="about-strip__col">
+      <SectionLabel text="TOOLKIT" />
+      <div class="skills-grid">
+        {skills.map((s) => (
+          <div class="skills-col">
+            <span class="technical-sm skills-col__label">{s.group}</span>
+            <ul class="skills-col__list label-md">
+              {s.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
- .hero {
-  display: grid;
-  grid-template-columns: minmax(420px, 1fr) minmax(380px, 520px);
-
-  align-items: center;
-  gap: clamp(48px, 6vw, 96px);
-
-  min-height: calc(100vh - 82px);
-
-  padding-block: 16px;
-}
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+    align-items: center;
+    gap: clamp(32px, 5vw, 96px);
+    min-height: calc(100vh - 82px);
+    padding-block: 16px;
+  }
 
   .hero__copy {
     display: flex;
@@ -209,25 +233,24 @@ const stats = [
     max-width: 640px;
   }
 
-  .hero__title{
-    font-size:clamp(3.5rem,7vw,6.8rem);
-    line-height:.9;
-    letter-spacing:-.05em;
-    margin-bottom:8px;
-}
+  .hero__title {
+    font-size: clamp(3.5rem, 7vw, 6.8rem);
+    line-height: .9;
+    letter-spacing: -.05em;
+    margin-bottom: 8px;
+  }
 
   .dot-red {
     color: var(--color-signal);
   }
 
-
-.hero__lede{
-    max-width:520px;
-
-    font-size:1.08rem;
+  .hero__lede {
+    max-width: 520px;
+    font-size: 1.08rem;
     color: var(--color-on-surface-variant);
-    line-height:1.8;
-}
+    line-height: 1.8;
+  }
+
   .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
   .hero__projects-btn { background: var(--color-primary); color: var(--color-on-primary); }
@@ -260,143 +283,46 @@ const stats = [
   }
 
   .hero__visual {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     position: relative;
-    border: 0;
-    background: transparent;
-    aspect-ratio: 4 / 5;
-    overflow: visible;
-  }
-
-  .hero__space {
-    position: absolute;
-    inset: 6px;
-    width: auto;
-    height: auto;
-    object-fit: cover;
-    opacity: 0.88;
-    filter: grayscale(1) contrast(1.12) brightness(0.7);
-    box-shadow: 0 0 52px 20px rgba(28, 28, 25, 0.18);
-    mask-image: radial-gradient(ellipse 72% 72% at center, #000 55%, transparent 100%);
-  }
-
-  .hero__visual > svg { display: none; }
-
-  .hero__overlay {
-    position: absolute;
-    top: 17px;
-    right: 17px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px 16px;
-    background: rgba(10, 10, 10, 0.7);
-    border: 1px solid rgba(253, 249, 244, 0.45);
-    backdrop-filter: blur(2px);
-  }
-
-  .hero__identity {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-  }
-
-  .hero__photo-frame {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    width: min(78%, 360px);
-    padding: 12px 12px 28px;
-    background: #fffdf9;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 14px 18px 0 rgba(28, 28, 25, 0.35);
-    transform: rotate(-2deg);
-    flex: none;
-  }
-
-  .hero__photo {
-    display: block;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    filter: grayscale(1) contrast(1.08);
-  }
-
-  .hero__photo-caption {
-    color: var(--color-on-background);
-    font-size: 9px;
-    letter-spacing: 0.08em;
-  }
-
-  .overlay-row {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    color: rgba(253, 249, 244, 0.7);
-    text-transform: uppercase;
-  }
-
-  .overlay-value {
-    color: var(--color-surface);
-  }
-
-  .overlay-value.signal {
-    color: var(--color-signal);
-  }
-
-  /* Minimal technical portrait treatment: the portrait is the only focal point. */
-  .hero__visual{
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-
-    position:relative;
-
     background-image:
-      linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px);
+      linear-gradient(rgba(0,0,0,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,.035) 1px, transparent 1px);
+    background-size: 32px 32px;
+    border: 0;
+    background-color: transparent;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    min-width: 0;
+  }
 
-    background-size:32px 32px;
-}
+  .hero__visual::before {
+    content: "";
+    position: absolute;
+    width: 430px;
+    height: 430px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(0,0,0,.07) 0%,
+      rgba(0,0,0,.03) 45%,
+      transparent 75%);
+    filter: blur(25px);
+    z-index: 0;
+  }
 
-.hero__visual::before{
-    content:"";
-
-    position:absolute;
-
-    width:430px;
-    height:430px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(circle,
-        rgba(0,0,0,.07) 0%,
-        rgba(0,0,0,.03) 45%,
-        transparent 75%);
-
-    filter:blur(25px);
-
-    z-index:0;
-}
-
-  .hero__portrait{
-    position:relative;
-    z-index:2;
-
-    width:min(100%,420px);
-
-    aspect-ratio:4/5;
-
-    object-fit:cover;
-
-    border:1px solid var(--color-outline-variant);
-
-    filter:grayscale(.92);
-
-    box-shadow:
-        0 18px 42px rgba(0,0,0,.12);
-}
+  .hero__portrait {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border: 1px solid var(--color-outline-variant);
+    filter: grayscale(.92);
+    box-shadow: 0 18px 42px rgba(0,0,0,.12);
+  }
 
   .hero__visual > svg,
   .hero__overlay,
@@ -404,6 +330,7 @@ const stats = [
     display: none;
   }
 
+  /* ── Selected Experiments ── */
   .experiments {
     padding-top: 64px;
     padding-bottom: 64px;
@@ -483,66 +410,101 @@ const stats = [
     margin: 0 auto;
   }
 
-  .lower-grid {
+  /* ── Experience ── */
+  .experience-section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .experience-section__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: var(--hairline) solid var(--color-outline-variant);
+  }
+
+  .experience-section__body {
+    max-width: 760px;
+  }
+
+  .experience-section__more {
+    padding-top: 8px;
+  }
+
+  /* ── About + Education + Toolkit strip ── */
+  .about-strip {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 1fr 1.4fr;
     gap: 48px;
     padding-top: 48px;
     padding-bottom: 96px;
   }
 
-  .lower-col {
+  .about-strip__col {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
   }
 
-  .hr-v-wrap {
-    display: flex;
-  }
-
-  .coords-visual {
-    opacity: 0.6;
-    max-height: 110px;
-    overflow: hidden;
-  }
-
-  .coords-visual svg {
-    width: 100%;
-    height: 110px;
-  }
-
-  .about-card {
-    padding: 16px;
+  .edu-card {
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
   }
 
-  .about-card__image {
-    width: 100%;
-    aspect-ratio: 269 / 128;
-    background: var(--color-surface-container-highest);
-    border: var(--hairline) solid var(--color-outline-variant);
-  }
-
-  .about-card__body {
+  .edu-card__body {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  .about-card__label {
+  .edu-card__label {
     color: var(--color-signal);
     text-transform: uppercase;
   }
 
-  .about-card__role {
-    color: var(--color-on-background);
-    font-weight: 700;
+  .edu-card__role {
+    color: var(--color-on-surface-variant);
   }
 
-  .about-card__sub {
+  .edu-card__org {
+    color: var(--color-on-background);
+  }
+
+  .edu-card__sub {
+    color: var(--color-on-surface-variant);
+    margin-top: 4px;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 16px;
+  }
+
+  .skills-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .skills-col__label {
+    color: var(--color-signal);
+    text-transform: uppercase;
+  }
+
+  .skills-col__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     color: var(--color-on-surface-variant);
   }
 
@@ -553,11 +515,9 @@ const stats = [
     .experiments__grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .lower-grid {
-      grid-template-columns: 1fr;
-    }
-    .hr-v-wrap {
-      display: none;
+    .about-strip {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
     }
   }
 
@@ -569,6 +529,10 @@ const stats = [
     }
     .experiments__grid {
       grid-template-columns: 1fr;
+    }
+    .about-strip {
+      grid-template-columns: 1fr;
+      gap: 32px;
     }
   }
 </style>

@@ -2,7 +2,7 @@
 role: "ML Research Intern"
 org: "EcoMuhafiz"
 location: "Remote"
-dateRange: "2026"
+dateRange: "Current"
 sortOrder: 1
 kind: "research"
 stack: ["ML","Python", "Pandas", "NumPy", "BirdNET", "Time-Series Analysis", "Statistical Modeling"]
